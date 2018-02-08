@@ -25,9 +25,9 @@ public ListNode AddTwoNumbers (ListNode l1, ListNode l2) {
                 l2 = l2.next;
             }
 
-            if(sum + carry > 9) {
-                sum = sum -10 < 0 ? 0 : sum;
-                temp = new ListNode(sum - 10);
+            if((sum + carry) > 9) {
+                sum = sum -10 < 0 ? 0 : sum + carry -10;
+                temp = new ListNode(sum);
                 carry = 1;
             } else {
                 temp = new ListNode(sum + carry);
@@ -40,7 +40,7 @@ public ListNode AddTwoNumbers (ListNode l1, ListNode l2) {
             temp = temp.next;
         }
 
-        if ((l1 == null && l2 == null && carry == 1) {
+        if (l1 == null && l2 == null && carry == 1) {
             temp = new ListNode(1);
             prevTemp.next = temp;
         }
