@@ -16,14 +16,15 @@ class solution():
 
         lastElement = self.r[-1] -1 # if range is default grab 99999
         lastElementSum = self.getDigitSum(lastElement) +1 # grab max value for digits
-        self.memorization = [None]*lastElementSum # fixed size array initialized with -1
+        self.memorization = [None]*lastElementSum # fixed size array initialized with None
 
     def ProcessNumber(self, number):
         """
         Checks if number is prime and stores prime number in a memorization list.
         Ref: [0]
         """
-        # if even stop cannot be prime or if number has already been calculated.
+        # if number is even stop it cannot be prime
+        #   or stop if number has already been calculated.
         if number % 2 == 0 or self.memorization[number] != None:
             return
         
@@ -52,7 +53,7 @@ class solution():
         if items position in memorization map is not none print its value.
         """
         for i in range(1, len(self.r)):
-            itemSum = self.getDigitSum(self.r[i]) # generate sum
+            itemSum = self.getDigitSum(self.r[i])
             self.ProcessNumber(itemSum)
 
             if self.memorization[itemSum] != None:
