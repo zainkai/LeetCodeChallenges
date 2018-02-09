@@ -60,7 +60,7 @@ class solution():
             itemSum = self.getDigitSum(self.r[i])
             self.ProcessNumber(itemSum)
 
-            if self.memorization[itemSum] != None and self.memorization[itemSum] != -1:
+            if self.memorization[itemSum] != -1:
                 # stdout is forcibly printed similar to C-style flush
                 print(self.memorization[itemSum], flush=True) 
 
