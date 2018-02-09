@@ -31,6 +31,7 @@ class solution():
         rangelimit = int( sqrt(number) +1 )
         for i in range(3, rangelimit, 1):
             if number % i == 0:
+                self.memorization[number] = -1
                 return
         self.memorization[number] = number
 
@@ -56,7 +57,7 @@ class solution():
             itemSum = self.getDigitSum(self.r[i])
             self.ProcessNumber(itemSum)
 
-            if self.memorization[itemSum] != None:
+            if self.memorization[itemSum] != -1:
                 # stdout is forcibly printed similar to C-style flush
                 print(self.memorization[itemSum], flush=True) 
 
