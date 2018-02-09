@@ -25,7 +25,9 @@ class solution():
         """
         # if number is even stop it cannot be prime
         #   or stop if number has already been calculated.
-        if number % 2 == 0 or self.memorization[number] != None:
+        
+        # double check memorization checks is working correctly.
+        if number % 2 == 0 or self.memorization[number] != -1:
             return
         
         rangelimit = int( sqrt(number) +1 )
