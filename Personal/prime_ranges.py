@@ -57,7 +57,8 @@ class solution():
             self.ProcessNumber(itemSum)
 
             if self.memorization[itemSum] != None:
-                print(self.memorization[itemSum])
+                # stdout is forcibly printed similar to C-style flush
+                print(self.memorization[itemSum], flush=True) 
 
 if __name__ == "__main__":
     solution().run()
