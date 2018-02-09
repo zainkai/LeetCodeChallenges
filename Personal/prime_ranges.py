@@ -25,11 +25,12 @@ class solution():
         """
         # if number is even stop it cannot be prime
         #   or stop if number has already been calculated.
-        
-        # double check memorization checks is working correctly.
-        if number % 2 == 0 or self.memorization[number] != -1:
+        if self.memorization[number] != None:
             return
-        
+        if number % 2 == 0:
+            self.memorization[number] = -1
+            return
+
         rangelimit = int( sqrt(number) +1 )
         for i in range(3, rangelimit, 1):
             if number % i == 0:
@@ -59,7 +60,7 @@ class solution():
             itemSum = self.getDigitSum(self.r[i])
             self.ProcessNumber(itemSum)
 
-            if self.memorization[itemSum] != -1:
+            if self.memorization[itemSum] != None and self.memorization[itemSum] != -1:
                 # stdout is forcibly printed similar to C-style flush
                 print(self.memorization[itemSum], flush=True) 
 
