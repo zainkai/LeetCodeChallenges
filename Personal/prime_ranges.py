@@ -23,14 +23,23 @@ class solution():
         Checks if number is prime and stores prime number in a memorization list.
         Ref: [0]
         """
-        # if number is even stop it cannot be prime
-        #   or stop if number has already been calculated.
-        if number % 2 == 0 or self.memorization[number] != None:
-            return
         
+        # stop if number has already been calculated.
+        if self.memorization[number] != None:
+            return
+        # edge case, stop if number is 1 and memorize it. 
+        elif number == 1: 
+            self.memorization[number] = number
+            return
+        # stop if number is even stop it cannot be prime
+        elif number % 2 == 0:
+            self.memorization[number] = -1
+            return
+
         rangelimit = int( sqrt(number) +1 )
         for i in range(3, rangelimit, 1):
             if number % i == 0:
+                self.memorization[number] = -1
                 return
         self.memorization[number] = number
 
@@ -52,11 +61,11 @@ class solution():
         Checks if the sum is a prime number
         if items position in memorization map is not none print its value.
         """
-        for i in range(1, len(self.r)):
+        for i in range(0, len(self.r)):
             itemSum = self.getDigitSum(self.r[i])
             self.ProcessNumber(itemSum)
 
-            if self.memorization[itemSum] != None:
+            if self.memorization[itemSum] != -1:
                 # stdout is forcibly printed similar to C-style flush
                 print(self.memorization[itemSum], flush=True) 
 
