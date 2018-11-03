@@ -15,7 +15,7 @@ function phoneWord(str, val='', map = {}) {
   }
 
   if(val.length === str.length) {
-    return val
+    return []
   }
 
   const strArr = [...str]
