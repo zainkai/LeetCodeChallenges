@@ -1,4 +1,4 @@
-function jumpGame(jArr, idx = 0) {
+function jumpGame(jArr, idx = 0, map = {}) {
   if(idx === jArr.length -1) {
     return true
   }
@@ -9,9 +9,11 @@ function jumpGame(jArr, idx = 0) {
   const maxJump = jArr[idx]
   let result = false
   for(let jump = 1; jump <= maxJump; jump++) {
-    result = result || jumpGame(jArr, idx + jump)
+    if(!map[idx]) {
+      map[idx] = jumpGame(jArr, idx + jump, map)
+    }
+    result = result || map[idx]
   }
-
   return result
 }
 
