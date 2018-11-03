@@ -4,13 +4,14 @@ function coinChange(coinArr, total, acc = 0, numCoin = 0, map = {}) {
 
   let result = Infinity
   for(let coin of coinArr) {
-    if(!map[acc + coin]) {
-      map[acc + coin] = coinChange(coinArr, total, acc + coin, numCoin +1)
+    const hashKey = [acc,coin].toString()
+    if(!map[hashKey]) {
+      map[hashKey] = coinChange(coinArr, total, acc + coin, numCoin +1)
     }
 
     result = Math.min(
       result,
-      map[acc + coin]
+      map[hashKey]
     )
   }
   return result === Infinity ? -1 : result
