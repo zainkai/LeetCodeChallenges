@@ -29,4 +29,4 @@ function phoneWord(str, val='', map = {}) {
   return Object.keys(map).filter(e => e.length === str.length)
 }
   
-console.log(phoneWord('23').length)
+console.log(phoneWord('23'))
