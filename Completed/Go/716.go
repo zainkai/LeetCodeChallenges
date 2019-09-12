@@ -7,7 +7,7 @@ type MaxStack struct {
 
 /** initialize your data structure here. */
 func Constructor() MaxStack {
-	return *new(MaxStack)
+	return MaxStack{}
 }
 
 func (this *MaxStack) Push(x int) {
