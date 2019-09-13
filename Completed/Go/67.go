@@ -1,6 +1,11 @@
+const (
+	one  = "1"
+	zero = "0"
+)
+
 func addBinary(a string, b string) string {
-	a = reverse(a)
-	b = reverse(b)
+	aArr := reverse(a)
+	bArr := reverse(b)
 
 	strLen := max(len(a), len(b))
 
@@ -45,12 +50,12 @@ func addBinary(a string, b string) string {
 	return result
 }
 
-func reverse(s string) string {
-	chars := []rune(s)
+func reverse(s string) []byte {
+	chars := []byte(s)
 	for i, j := 0, len(chars)-1; i < j; i, j = i+1, j-1 {
 		chars[i], chars[j] = chars[j], chars[i]
 	}
-	return string(chars)
+	return chars
 }
 
 func max(a int, b int) int {
