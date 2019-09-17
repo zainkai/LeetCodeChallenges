@@ -1,33 +1,33 @@
 const (
-	one  = "1"
-	zero = "0"
+	one  = '1'
+	zero = '0'
 )
 
 func addBinary(a string, b string) string {
 	aArr := reverse(a)
 	bArr := reverse(b)
 
-	strLen := max(len(a), len(b))
+	strLen := max(len(aArr), len(bArr))
 
 	result := ""
 	carry := false
 	for i := 0; i < strLen; i++ {
-		var x, y byte = '0', '0'
-		if i < len(a) {
-			x = a[i]
+		var x, y byte = zero, zero
+		if i < len(aArr) {
+			x = aArr[i]
 		}
-		if i < len(b) {
-			y = b[i]
+		if i < len(bArr) {
+			y = bArr[i]
 		}
 
-		if x == '1' && y == '1' {
+		if x == one && y == one {
 			if carry {
 				result = "1" + result
 			} else {
 				carry = true
 				result = "0" + result
 			}
-		} else if x == '0' && y == '0' {
+		} else if x == zero && y == zero {
 			if carry {
 				carry = false
 				result = "1" + result
