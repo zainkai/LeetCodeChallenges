@@ -3,7 +3,7 @@ type runeStack struct {
 }
 
 func isValid(s string) bool {
-	stk := runeStack{[]rune{}}
+	stk := runeStack{}
 	for _, r := range s {
 		if top := stk.Peek(); isPair(top, r) {
 			stk.Pop()
