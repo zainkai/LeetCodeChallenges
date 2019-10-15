@@ -1,20 +1,25 @@
-import (
-	"strings"
-)
+import "strings"
 
 func reverseWords(s string) string {
-	words := strings.Split(s, " ")
-	for i, word := range words {
-			words[i] = reverseString(word)
+	tokens := strings.Split(s, " ")
+
+	for i, token := range tokens {
+		tokens[i] = reverse(token)
 	}
-	
-	return strings.Join(words, " ")
+
+	return strings.Join(tokens, " ")
 }
 
-func reverseString(s string) string {
-	r := []rune(s)
-for i, j := 0, len(r)-1; i < len(r)/2; i, j = i+1, j-1 {
-	r[i], r[j] = r[j], r[i]
-}
-return string(r)
+func reverse(s string) string {
+	l := 0
+	r := len(s) - 1
+	result := []rune(s)
+
+	for l < r {
+		result[l], result[r] = result[r], result[l]
+		l++
+		r--
+	}
+
+	return string(result)
 }
