@@ -5,11 +5,11 @@ type item struct {
 
 func ladderLength(beginWord string, endWord string, wordList []string) int {
 	dict, q, result := getOneDistDictionary(beginWord, wordList), New(), 0
-	q.Enqueue(item{beginWord, 0})
+	q.Enqueue(&item{beginWord, 0})
 
 	visited := map[string]bool{}
 	for q.Len() > 0 {
-		ele := q.Dequeue().(item)
+		ele := q.Dequeue().(*item)
 
 		if ele.Word == endWord && (result == 0 || ele.Dist < result) {
 			result = ele.Dist + 1
@@ -19,7 +19,7 @@ func ladderLength(beginWord string, endWord string, wordList []string) int {
 			if visited[word] {
 				continue
 			}
-			q.Enqueue(item{word, ele.Dist + 1})
+			q.Enqueue(&item{word, ele.Dist + 1})
 			visited[word] = true
 		}
 	}
@@ -44,12 +44,7 @@ func isOneEditDist(s, t string) bool {
 // getOneDistDictionary get all words with a edit distance of one
 func getOneDistDictionary(beginWord string, wordList []string) map[string][]string {
 	dict := make(map[string][]string)
-
-	for _, word := range wordList {
-		if isOneEditDist(beginWord, word) {
-			dict[beginWord] = append(dict[beginWord], word)
-		}
-	}
+	wordList = append(wordList, beginWord)
 
 	for i, key := range wordList {
 		for j, word := range wordList {
