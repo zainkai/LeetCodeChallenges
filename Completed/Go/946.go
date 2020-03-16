@@ -7,7 +7,7 @@ func validateStackSequences(pushed []int, popped []int) bool {
 	pu, po := 0, 0
 
 	for pu <= len(pushed) && po < len(popped) {
-		if stk.Len() > 0 && stk.Top() == popped[po] {
+		if t, err := stk.Top(); err == nil && t == popped[po] {
 			stk.Pop()
 			po++
 		} else if pu < len(pushed) {
@@ -38,8 +38,12 @@ func (s *stack) Pop() (int, error) {
 	return res, nil
 }
 
-func (s *stack) Top() int {
-	return (*s)[len(*s)-1]
+func (s *stack) Top() (int, error) {
+	if s.Len() == 0 {
+		return 0, errors.New("Empty Stack")
+	}
+
+	return (*s)[len(*s)-1], nil
 }
 
 func (s *stack) Len() int {
