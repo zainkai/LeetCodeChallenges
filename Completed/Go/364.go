@@ -1,4 +1,4 @@
-// Brute Force
+// ******************************************************** Brute Force
 /**
  * // This is the interface that allows for creating nested lists.
  * // You should not implement it, or speculate about its implementation
@@ -62,3 +62,38 @@
 //     }
 //     return b
 // }
+
+// Better ----------------------
+func depthSumInverse(nestedList []*NestedInteger) int {
+	sumMap := make(map[int]int)
+	sum, depth := 0, 1
+
+	dfs(nestedList, 1, &depth, sumMap)
+	for d, val := range sumMap {
+		sum += val * (depth - d + 1)
+	}
+
+	return sum
+}
+
+func dfs(nl []*NestedInteger, depth int, maxDepth *int, sumMap map[int]int) {
+	levelSum := 0
+	*maxDepth = max(*maxDepth, depth)
+
+	for _, list := range nl {
+		if list.IsInteger() {
+			levelSum += list.GetInteger()
+		} else {
+			dfs(list.GetList(), depth+1, maxDepth, sumMap)
+		}
+	}
+
+	sumMap[depth] += levelSum
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
