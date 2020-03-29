@@ -2,15 +2,15 @@ package notes
 
 import "errors"
 
-type stack []int
+type stack []interface{}
 
-func (s *stack) Push(v int) {
+func (s *stack) Push(v interface{}) {
 	*s = append(*s, v)
 }
 
-func (s *stack) Pop() (int, error) {
+func (s *stack) Pop() (interface{}, error) {
 	if s.Len() == 0 {
-		return 0, errors.New("Empty Stack")
+		return nil, errors.New("empty stack")
 	}
 
 	res := (*s)[len(*s)-1]
@@ -18,9 +18,9 @@ func (s *stack) Pop() (int, error) {
 	return res, nil
 }
 
-func (s *stack) Top() (int, error) {
+func (s *stack) Top() (interface{}, error) {
 	if s.Len() == 0 {
-		return 0, errors.New("Empty Stack")
+		return nil, errors.New("empty stack")
 	}
 
 	return (*s)[len(*s)-1], nil
