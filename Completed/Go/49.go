@@ -1,5 +1,5 @@
 import "sort"
-
+// O(N * klogk)
 func groupAnagrams(strs []string) [][]string {
 	m := map[string][]string{}
 
@@ -30,3 +30,29 @@ func sortBytes(s string) string {
 
 	return string(b)
 }
+
+// O(N *K)
+// func groupAnagrams(words []string) [][]string {
+// 	m := map[[26]int][]string{}
+
+// 	for _, word := range words {
+// 		arr := wordToCharCount(word)
+// 		m[arr] = append(m[arr], word)
+// 	}
+
+// 	res := [][]string{}
+// 	for _, val := range m {
+// 		res = append(res, val)
+// 	}
+
+// 	return res
+// }
+
+// func wordToCharCount(word string) [26]int {
+// 	res := [26]int{}
+
+// 	for _, r := range word {
+// 		res[r-'a']++
+// 	}
+// 	return res
+// }
