@@ -25,7 +25,7 @@ func (q *Queue) Enqueue(val interface{}) {
 }
 
 // Dequeue ...
-func (q *Queue) Dequeue() (interface, error) {
+func (q *Queue) Dequeue() (interface{}, error) {
 	if q.Len() == 0 {
 		return nil, errors.New("empty queue")
 	}
@@ -37,7 +37,7 @@ func (q *Queue) Dequeue() (interface, error) {
 }
 
 // Top ...
-func (q *Queue) Top() (interface, error) {
+func (q *Queue) Top() (interface{}, error) {
 	if q.Len() == 0 {
 		return nil, errors.New("empty queue")
 	}
