@@ -5,15 +5,18 @@ const (
 
 func possibleBipartition(N int, dislikes [][]int) bool {
     // step 1 create dislike connections
+    // construct adjList O(V+E)
     adjList := getAdjList(dislikes)
     visited := map[int]int{}
     
     // step 2 not all groups know each other
+    // DFS on non traversed vertices O(V+E)
     for i := 1; i <= N; i ++ {
         helper(i, red, visited, adjList)
     }
     
     // step 3 verify groups
+    // O(V + E)
     for curr := range visited {
         for _, conn := range adjList[curr] {
             if visited[curr] == visited[conn] {
