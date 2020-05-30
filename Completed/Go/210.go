@@ -1,84 +1,44 @@
-func findOrder(numCourses int, prereqs [][]int) []int {
-    indegree := map[int]int{}
-    visited := map[int]bool{}
-    adjList := map[int][]int{}
-    q := NewQueue()
+func findOrder(numCourses int, prerequisites [][]int) []int {
+    adjList, indegree := getMaps(prerequisites)
     
+    q := []int{}
     for i := 0; i < numCourses; i++ {
-        indegree[i] = 0
-    }
-    for _, prereq := range prereqs {
-        start, end := prereq[1], prereq[0]
-        indegree[end]++
-        
-        adjList[start] = append(adjList[start], end)
+        if indegree[i] == 0 {
+            q = append(q, i)
+        }
     }
     
     path := []int{}
-    QueueZeroDegree(indegree, visited, q, &path)
-    
-    for q.Len() > 0 {
-        course := q.Dequeue().(int)
-        visited[course] = true
+    for len(q) > 0 {
+        course := q[0]
+        path = append(path, course)
+        q = q[1:]
         
-        for _, next := range adjList[course] {
-            indegree[next]--
+        for _, conn := range adjList[course] {
+            indegree[conn]--
+            if deg, ok := indegree[conn]; ok && deg == 0 {
+                delete(indegree, conn)
+                q = append(q, conn)
+            }
         }
-        QueueZeroDegree(indegree, visited, q, &path)
     }
     
-    if len(indegree) != 0 {
-        return []int{}
+    if len(indegree) == 0{
+        return path
     }
-    return path
+    return []int{}
 }
 
-func QueueZeroDegree(indegree map[int]int, visited map[int]bool, q *Queue, path *[]int) {
-    for course, deg := range indegree {
-        if deg == 0 && !visited[course] {
-            *path = append(*path, course)
-            
-            q.Enqueue(course)
-            delete(indegree, course)
-        }
+func getMaps(edges [][]int) (map[int][]int, map[int]int) {
+    adjList := map[int][]int{}
+    indegree := map[int]int{}
+    
+    for _, edge := range edges {
+        a, b := edge[0], edge[1]
+        indegree[a]++
+
+        adjList[b] = append(adjList[b], a)
     }
-}
-
-
-
-// Queue util................................................
-// Queue ...
-type Queue struct {
-	list *list.List
-}
-
-// NewQueue ...
-func NewQueue() *Queue {
-	return &Queue{
-		list: list.New(),
-	}
-}
-
-// Len ...
-func (q *Queue) Len() int {
-	return q.list.Len()
-}
-
-// Enqueue ...
-func (q *Queue) Enqueue(val interface{}) {
-	q.list.PushBack(val)
-}
-
-// Dequeue ...
-func (q *Queue) Dequeue() (interface{}) {
-	ele := q.list.Front()
-	defer q.list.Remove(ele)
-
-	return ele.Value
-}
-
-// Top ...
-func (q *Queue) Top() (interface{}) {
-	ele := q.list.Front()
-	return ele.Value
+    
+    return adjList, indegree
 }
