@@ -1,22 +1,19 @@
 func maxSubArray(nums []int) int {
-	if len(nums) == 0 {
-		return 0
-	}
-
-	result := nums[0]
-	for i := 1; i < len(nums); i++ {
-		t := nums[i] + nums[i-1]
-		nums[i] = max(nums[i], t)
-
-		result = max(result, nums[i])
-	}
-
-	return result
+  memo := map[int]int{}
+  memo[len(nums)-1] = nums[len(nums)-1]
+  res := nums[len(nums)-1]
+  
+  for i:= len(nums)-2; i >= 0; i-- {
+    memo[i] = max(nums[i], nums[i]+memo[i+1])
+    res = max(res, memo[i])
+  }
+  
+  return res
 }
 
 func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
+  if a > b {
+    return a
+  }
+  return b
 }
