@@ -1,12 +1,21 @@
 func removeDuplicates(nums []int) int {
-    idx := 0
-    m := map[int]bool{}
-    for _, v := range nums {
-        if !m[v] {
-            m[v] = true
-            nums[idx] = v
-            idx++
-        }
+    if len(nums) <= 1 {
+        return len(nums)
     }
-    return idx
+    
+    anchor := 0
+    runner := 0
+    
+    for runner < len(nums) {        
+        a := nums[anchor]
+        b := nums[runner]
+        
+        if a != b{
+            anchor++
+            nums[anchor] = nums[runner]
+        }
+        runner++
+    }
+    
+    return anchor+1
 }
