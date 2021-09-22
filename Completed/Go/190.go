@@ -1,19 +1,15 @@
 func reverseBits(num uint32) uint32 {
-	var result uint32 = 0
-	var mask uint32 = 1
-
-	for i := 0; i < 31; i++ {
-		if num&mask > 0 {
-			result += 1
-		}
-
-		result <<= 1
-		mask <<= 1
-	}
-
-	if num&mask > 0 {
-		result += 1
-	}
-
-	return result
+    mask := uint32(1)
+    rMask := uint32(1 << 31)
+    res := uint32(0)
+    
+    for mask > 0 {
+        if mask & num > 0 {
+            res = res | rMask
+        }
+        mask <<= 1
+        rMask >>= 1
+    }
+    
+    return res
 }
