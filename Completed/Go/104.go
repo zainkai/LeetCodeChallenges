@@ -7,21 +7,19 @@
  * }
  */
 func maxDepth(root *TreeNode) int {
-	return helperFunc(root, 0)
+    if root == nil {
+        return 0
+    }
+    
+    return max(
+        maxDepth(root.Left),
+        maxDepth(root.Right),
+    )+1
 }
 
-func helperFunc(root *TreeNode, currDepth int) int {
-	if root == nil {
-		return currDepth
-	}
-
-	left := helperFunc(root.Left, currDepth+1)
-	right := helperFunc(root.Right, currDepth+1)
-
-	if left < right {
-		return right
-	} else {
-		return left
-	}
-
+func max(a,b int) int {
+    if a > b {
+        return a
+    }
+    return b
 }
