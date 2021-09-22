@@ -26,3 +26,28 @@ func sortBytes(s string) []byte {
 
 	return arr
 }
+
+
+// better way
+
+func isAnagram(s string, t string) bool {
+    if len(s) != len(t) {
+        return false
+    }
+    
+    m := map[byte]int{}
+    for i := range s {
+        a := s[i]
+        m[a]++
+        
+        b := t[i]
+        m[b]--
+    }
+    
+    for _, v := range m {
+        if v != 0 {
+            return false
+        }
+    }
+    return true
+}
