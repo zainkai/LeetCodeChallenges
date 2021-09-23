@@ -1,42 +1,40 @@
 func insert(intervals [][]int, newInterval []int) [][]int {
-    // intsert newInterval
-    interted := false
+    //intervals = append(intervals, newInterval)
+    //sort.Slice(intervals, func(i,j int) bool {
+    //    return intervals[i][0] < intervals[j][0]
+    //})
+    
+    // insert newInterval
+    inserted := false
     for i, interval := range intervals {
-        if newInterval[0] < interval[0] {
-            temp := append([][]int{}, intervals[:i]...)
-            temp = append(temp, newInterval)
-            temp = append(temp, intervals[i:]...)
-            
-            intervals = temp
-            
-            interted = true
+        if newInterval[0] <= interval[0] {
+            intervals = append(intervals[:i], append([][]int{newInterval}, intervals[i:]...)...)
+            inserted = true
             break
         }
     }
-    if len(intervals) == 0 || !interted {
+    if !inserted {
         intervals = append(intervals, newInterval)
     }
     
-    fmt.Println(intervals)
+    // merge intervals
+    res := [][]int{}
+    start := intervals[0][0]
+    end := intervals[0][1]
     
-    
-    ans := [][]int{}
-    
-    s1 := intervals[0][0]
-    e1 := intervals[0][1] 
-    // merge overlapping intervals
     for i := 1; i < len(intervals); i++ {
-        s2, e2 := intervals[i][0], intervals[i][1]
-        if s2 <= e1 && e1 < e2 {
-            e1 = e2
-        } else if e1 < s2 {
-            ans = append(ans, []int{s1, e1})
-            s1 = s2
-            e1 = e2
-        } 
+        tStart := intervals[i][0]
+        tEnd := intervals[i][1]
+        if tStart <= end && end < tEnd {
+            end = tEnd
+        } else if tStart > end {
+            res = append(res, []int{start, end})
+            start = tStart
+            end = tEnd
+        }
     }
-    ans = append(ans, []int{s1, e1})
+    res = append(res, []int{start, end})
     
     
-    return ans
+    return res
 }
