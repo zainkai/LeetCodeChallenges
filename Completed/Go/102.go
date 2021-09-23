@@ -1,11 +1,3 @@
-import "container/list"
-
-type QueueNode struct {
-	n *TreeNode
-	level int
-}
-
-
 /**
  * Definition for a binary tree node.
  * type TreeNode struct {
@@ -14,77 +6,59 @@ type QueueNode struct {
  *     Right *TreeNode
  * }
  */
+type frame struct {
+    height int
+    n *TreeNode
+}
+
+
 func levelOrder(root *TreeNode) [][]int {
+    res := [][]int{}
     if root == nil {
-        return make([][]int, 0)
+        return res
     }
     
-    q := NewQueue()
+    q := []frame{}
+    Enque(&q, frame{
+        height:0,
+        n:root,
+    })
 
-	res := make([][]int, 0)
-	q.Enqueue(QueueNode{root, 1})
-	
-	for q.Len() > 0 {
-		x, _ := q.Dequeue()
-        qn := x.(QueueNode)
-        if qn.level > len(res) {
+    for len(q) > 0 {
+        f := Deque(&q)
+        if f.height >= len(res) {
             res = append(res, []int{})
         }
-
-
-        res[qn.level-1] = append(res[qn.level-1], qn.n.Val)
-
-        if qn.n.Left != nil {
-            q.Enqueue(QueueNode{ qn.n.Left, qn.level+1 })
+        
+        res[f.height] = append(res[f.height], f.n.Val)
+        
+        if f.n.Right != nil {
+            Enque(&q, frame{
+                height: f.height+1,
+                n: f.n.Right,
+            })
         }
-        if qn.n.Right != nil {
-            q.Enqueue(QueueNode{ qn.n.Right, qn.level+1 })
+        if f.n.Left != nil {
+            Enque(&q, frame{
+                height: f.height+1,
+                n: f.n.Left,
+            })
         }
-
+        
     }
     return res
 }
 
-// Queue ...
-type Queue struct {
-	list *list.List
+
+// helpers
+func Enque(q *[]frame, f frame) {
+    *q = append(*q, f)
 }
 
-// NewQueue ...
-func NewQueue() *Queue {
-	return &Queue{
-		list: list.New(),
-	}
+func Deque(q *[]frame) frame {
+    top := (*q)[len(*q)-1]
+    *q = (*q)[:len(*q)-1]
+    
+    return top
 }
 
-// Len ...
-func (q *Queue) Len() int {
-	return q.list.Len()
-}
-
-// Enqueue ...
-func (q *Queue) Enqueue(val interface{}) {
-	q.list.PushBack(val)
-}
-
-// Dequeue ...
-func (q *Queue) Dequeue() (interface{}, error) {
-	if q.Len() == 0 {
-		return nil, errors.New("empty queue")
-	}
-
-	ele := q.list.Front()
-	defer q.list.Remove(ele)
-
-	return ele.Value, nil
-}
-
-// Top ...
-func (q *Queue) Top() (interface{}, error) {
-	if q.Len() == 0 {
-		return nil, errors.New("empty queue")
-	}
-
-	ele := q.list.Front()
-	return ele.Value, nil
-}
