@@ -1,40 +1,34 @@
-import (
-    "strings"
-)
+import "strings"
 
-type EAddr struct {
-    local, domain string
+type Email struct {
+    local string
+    domain string
 }
 
 func numUniqueEmails(emails []string) int {
-    uniqueEmails := map[EAddr]bool{}
+    emailSet := map[Email]bool{}
     
     for _, email := range emails {
-        uniqueEmails[initEAddr(email)] = true
+        key := GetEmailObj(email)
+        emailSet[key] = true
     }
     
-    return len(uniqueEmails)
+    return len(emailSet)
 }
 
-func initEAddr(email string) EAddr {
-    ea := EAddr{}
+func GetEmailObj(email string) Email {
+    tokenized := strings.Split(email, "@")
+    local := tokenized[0]
     
-    tok := strings.Split(email, "@")
-
-    ea.domain = tok[1]
+    // Rule: remove anything after +
+    local = strings.Split(local, "+")[0]
+    // Rule: ignore .
+    local = strings.ReplaceAll(local, ".", "")
     
-    local := tok[0]
-    sb := strings.Builder{}
-    for _, r := range local {
-        if r == '.' {
-            continue
-        } else if r == '+' {
-            break
-        } else {
-            sb.WriteRune(r)
-        }
+    domain := tokenized[1]
+    
+    return Email{
+        local,
+        domain,
     }
-    ea.local = sb.String()
-    
-    return ea
 }
