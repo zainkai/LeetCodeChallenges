@@ -26,3 +26,33 @@ func max(a, b int) int {
 	}
 	return b
 }
+
+// recursive
+func rob(nums []int) int {
+    res := 0
+    memo := map[int]int{}
+    
+    for i := range nums {
+        res = max(
+            res,
+            helper(memo, nums, i),
+        )
+    }
+    return res
+}
+
+func helper(memo map[int]int, nums []int, idx int) int {
+    if idx >= len(nums) {
+        memo[idx] = 0
+        return 0
+    } else if res, ok := memo[idx]; ok {
+        return res
+    }
+    
+    memo[idx] = nums[idx] + max(
+        helper(memo, nums, idx+2),
+        helper(memo, nums, idx+3),
+    )
+    
+    return memo[idx]
+}
