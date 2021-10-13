@@ -1,27 +1,35 @@
 func combinationSum(candidates []int, target int) [][]int {
-    results := [][]int{}
+    res := [][]int{}
     
-    backtrack(candidates, []int{}, target, 0, &results)
+    helper(0, candidates, target, []int{}, &res)
     
-    return results
+    return res
 }
 
-func backtrack(candidates, buf []int, target, idx int, results *[][]int) {
-    if target == 0 {
-        tmp := make([]int, len(buf))
-        copy(tmp, buf)
-        
-        *results = append(*results, tmp)
-    } else if target < 0 {
+func cpyArr(t []int) []int {
+    res := make([]int, len(t))
+    copy(res, t)
+    
+    return res
+}
+
+func helper(idx int, candidates []int, target int, path []int, res *[][]int) {
+    if target < 0 {
+        return
+    } else if target == 0 {
+        *res = append(*res, cpyArr(path))
         return
     }
     
     for i := idx; i < len(candidates); i++ {
-        buf = append(buf, candidates[i])
-        t := target - candidates[i]
-        backtrack(candidates, buf, t, i, results)
+        val := candidates[i]
+        target -= val
+        path = append(path, val)
         
-        buf = buf[:len(buf)-1]
+        helper(i, candidates, target, path, res)
+        
+        target += val
+        path = path[:len(path)-1]
+        
     }
-    
 }
