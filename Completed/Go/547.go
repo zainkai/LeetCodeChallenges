@@ -23,3 +23,35 @@ func dfs(visited map[int]bool, edges [][]int, student int) {
 		}
 	}
 }
+
+
+// union set
+func findCircleNum(isConnected [][]int) int {
+    roots := make([]int, len(isConnected))
+    for i := 0; i < len(isConnected); i++ {
+        roots[i] = i
+    }
+    
+    res := len(isConnected)
+    for a := range isConnected {
+        for b := range isConnected[a] {
+            if isConnected[a][b] == 1 {
+                rootA := find(a, roots)
+                rootB := find(b, roots)
+                
+                if rootA != rootB {
+                    roots[rootB] = rootA
+                    res--
+                }
+            }
+        }
+    }
+    return res
+}
+
+func find(v int, roots []int) int {
+    for roots[v] != v {
+        v = roots[v]
+    }
+    return v
+}
