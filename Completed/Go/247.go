@@ -1,44 +1,41 @@
 var (
-	strobMap = map[byte]byte{
-		'1':'1',
-		'6':'9',
-		'8':'8',
-        '9':'6',
-        '0':'0',
+    strobs = map[string]string{
+        "0":"0",
+        "1":"1",
+        "6":"9",
+        "8":"8",
+        "9":"6",
     }
+    
+    seeds = []string{"0", "1", "8"}
 )
 
-
 func findStrobogrammatic(n int) []string {
-    output := []string{}
-    
-    
-	
     if n == 1 {
-        return []string{"0", "1", "8"}
-    } else if n % 2 == 0 {
-		helper("", n, &output)
+        return seeds
+    }
+    
+    res := []string{}
+    if n % 2 == 0 {
+        helper(n, "", &res)
     } else {
-        helper("1", n-1, &output)
-        helper("8", n-1, &output)
-        helper("0", n-1, &output)
+        for _, seed := range seeds {
+            helper(n, seed, &res)
+        }
     }
-	return output
+    
+    return res
 }
 
-
-func helper(str string, n int, output *[]string) {
-	if n < 0 {
+func helper(n int, s string, res *[]string) {
+    if len(s) == n && s[0] != '0' {
+        *res = append(*res, s)
         return
-    } else if n == 0 && str[0] != '0' { 
-        *output = append(*output, str)
+    } else if len(s) > n {
         return
     }
-
-    for l, r := range strobMap {
-        newStr := string(l) + str + string(r)
-        helper(newStr, n-2, output)
+    
+    for l, r := range strobs {
+        helper(n, l+s+r, res)
     }
 }
-
-
