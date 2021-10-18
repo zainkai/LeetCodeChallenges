@@ -1,44 +1,30 @@
-type data struct {
-	parent int
-	depth  int
-	target int
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func isCousins(root *TreeNode, x int, y int) bool {    
+    xDepth, xParent :=helper(root, x, 0, -1)
+    yDepth, yParent := helper(root, y, 0, -1)
+    
+    return xDepth == yDepth && xParent != yParent
 }
 
-func isCousins(root *TreeNode, x, y int) bool {
-	if x == y || root == nil {
-		return false
-	}
-
-	xData := data{
-		-1, 0, x,
-	}
-	yData := data{
-		-1, 0, y,
-	}
-
-	helper(root, nil, &xData, &yData, 0)
-
-    return xData.depth == yData.depth && xData.parent != yData.parent
-}
-
-func helper(root, parent *TreeNode, x, y *data, depth int) {
+func helper(root *TreeNode, target, depth, parent int) (int, int) {
     if root == nil {
-        return
+        return -1, -1
+    } else if root.Val == target {
+        return depth, parent
     }
     
-    if root.Val == x.target {
-        x.depth = depth
-        if parent != nil {
-            x.parent = parent.Val
-        }
-    }
-    if root.Val == y.target {
-        y.depth = depth
-        if parent != nil {
-            y.parent = parent.Val
-        }
-    }
+    depth++
+    parent = root.Val
     
-    helper(root.Left, root, x, y, depth+1)
-    helper(root.Right, root, x, y, depth+1)
+    if res, parent := helper(root.Left, target, depth, parent); res != -1 {
+        return res, parent
+    }
+    return helper(root.Right, target, depth, parent)
 }
