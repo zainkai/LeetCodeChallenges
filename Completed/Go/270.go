@@ -6,41 +6,33 @@
  *     Right *TreeNode
  * }
  */
-import (
-    "math"
-)
-
-type Data struct {
-    diff float64
-    num int
-}
-
 func closestValue(root *TreeNode, target float64) int {
-    d := Data{math.MaxFloat64, 0}
-    helper(root, target, &d)
+    res := 0
+    diff := float64(1<<63-1)
     
-    return d.num
+    helper(root, target, &diff, &res)
+    
+    return res
 }
 
-func helper(root *TreeNode, target float64, d *Data) {
+func helper(root *TreeNode, target float64, diff *float64, res *int) {
     if root == nil {
         return
     }
-   
-    f := float64(root.Val)
-    if v := abs(f- target); v < (*d).diff {
-        (*d).diff = v
-        (*d).num = root.Val
+    
+    tmpDiff := abs(float64(root.Val) - target)
+    if tmpDiff < *diff {
+        *diff = tmpDiff
+        *res = root.Val
     }
     
-    helper(root.Left, target, d)
-    helper(root.Right, target, d)
+    helper(root.Left, target, diff, res)
+    helper(root.Right, target, diff, res)
 }
 
 func abs(x float64) float64 {
     if x < 0 {
-        return -1*x
+        return -x
     }
     return x
 }
-
