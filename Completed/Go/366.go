@@ -6,34 +6,30 @@
  *     Right *TreeNode
  * }
  */
- func findLeaves(root *TreeNode) [][]int {
-    if root == nil {
-        return make([][]int, 0)
+func findLeaves(root *TreeNode) [][]int {
+    levels := map[int][]int{}
+    
+    maxLevel := helper(root, levels)
+    res := make([][]int, maxLevel+1)
+    
+    for level, arr := range levels {
+        res[level] = arr
     }
-    
-    m := map[int][]int{}
-    postOrderTrav(root, m)
-    
-    leafs := make([][]int, len(m))
-    for level, leafArr := range m {
-        leafs[level] = leafArr
-    }
-    
-    return leafs
+    return res
 }
 
-func postOrderTrav(root *TreeNode, m map[int][]int) int {    
-    level := -1
-    if root.Left != nil {
-        level = max(level, postOrderTrav(root.Left, m))
+func helper(root *TreeNode, n map[int][]int) int {
+    if root == nil {
+        return -1
+    } else if root.Left == nil && root.Right == nil {
+        n[0] = append(n[0], root.Val)
+        return 0
     }
     
-    if root.Right != nil {
-        level = max(level, postOrderTrav(root.Right, m))
-    }
+    level := max(helper(root.Left,n), helper(root.Right, n)) +1
+    n[level] = append(n[level], root.Val)
     
-    m[level+1] = append(m[level+1], root.Val)
-    return level+1
+    return level
 }
 
 func max(a, b int) int {
