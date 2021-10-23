@@ -1,34 +1,39 @@
-// back tracking instead of memo list
-func exist(board [][]byte, word string) bool {
-	for i := 0; i < len(board); i++ {
-		for j := 0; j < len(board[i]); j++ {
-			if board[i][j] == word[0] && backtrack(board, word, 0, i, j) {
-				return true
-			}
-		}
-	}
-	return false
+var moves = [][]int{
+    []int{0,1},
+    []int{0,-1},
+    []int{1,0},
+    []int{-1,0},
 }
 
-func backtrack(board [][]byte, word string, pos int, i int, j int) bool {
-	if i < 0 || i > len(board)-1 {
-		return false
-	} else if j < 0 || j > len(board[i])-1 {
-		return false
-	} else if pos == len(word)-1 && board[i][j] == word[pos] {
-		return true
-	} else if board[i][j] != word[pos] {
-		return false
-	}
+func exist(board [][]byte, word string) bool {
+    for i := range board {
+        for j := range board[i] {
+            if helper(i,j, board, word) {
+                return true
+            }
+        }
+    }
+    return false
+}
 
-	tmp := board[i][j]
-	board[i][j] = byte(0)
-
-	if backtrack(board, word, pos+1, i-1, j) || backtrack(board, word, pos+1, i+1, j) || backtrack(board, word, pos+1, i, j+1) || backtrack(board, word, pos+1, i, j-1) {
-		board[i][j] = tmp
-		return true
-	}
-
-	board[i][j] = tmp
-	return false
+func helper(x,y int, board [][]byte, word string) bool {
+    if len(word) == 0 {
+        return true
+    } else if x < 0 || y < 0 || x >= len(board) || y >= len(board[x]) {
+        return false
+    } else if top := word[0]; top != board[x][y] {
+        return false
+    }
+    
+    
+    tmp := board[x][y]
+    board[x][y] = byte(0)
+    for _, move := range moves {
+        if helper(x+move[0], y+move[1], board, word[1:]) {
+            return true
+        }
+    }
+    board[x][y] = tmp
+    
+    return false
 }
