@@ -1,6 +1,7 @@
 import (
     "strings"
     "strconv"
+    "fmt"
 )
 
 var (
@@ -43,7 +44,9 @@ func helper(grid [][]int, x,y int, sX, sY int, sb *strings.Builder) {
     grid[x][y] = 0
     tmpX := strconv.Itoa(sX)
     tmpY := strconv.Itoa(sY)
-    (*sb).WriteString(tmpX+","+tmpY+"|")
+    
+    step := fmt.Sprintf("%v,%v|", tmpX, tmpY)
+    (*sb).WriteString(step)
     for _, move := range moves {
         helper(grid, 
                x + move[0], 
