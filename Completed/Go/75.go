@@ -1,24 +1,31 @@
 func sortColors(nums []int)  {
-    c1 := 0
-    c2 := 0
+    redCount := 0
+    whiteCount := 0
+    blueCount := 0
     
-    for _, c := range nums {
-        if c == 0 {
-            c1++
-        } else if c == 1 {
-            c2++
+    for _, v := range nums {
+        switch v {
+            case 0:
+            redCount++
+            case 1:
+            whiteCount++
+            case 2:
+            blueCount++
+            default:
+            continue
         }
     }
     
     for i := range nums {
-        if c1 > 0 {
+        if redCount > 0 {
             nums[i] = 0
-            c1--
-        } else if c2 > 0 {
+            redCount--
+        } else if whiteCount > 0 {
             nums[i] = 1
-            c2--
+            whiteCount--
         } else {
             nums[i] = 2
+            blueCount--
         }
     }
 }
