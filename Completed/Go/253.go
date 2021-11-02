@@ -1,3 +1,56 @@
+// Line sweep **************************************
+import (
+    "sort"
+)
+
+type frame struct {
+    idx int
+    t string
+}
+
+func minMeetingRooms(intervals [][]int) int {
+    arr := []frame{}
+    for _, inv := range intervals {
+        start, end := inv[0], inv[1]
+        
+        arr = append(arr, frame{start, "S"})
+        arr = append(arr, frame{end, "E"})
+    }
+    
+   sort.Slice(arr, func(i,j int) bool {
+        if arr[i].idx == arr[j].idx {
+            return arr[i].t == "E"
+        }
+        
+        return arr[i].idx < arr[j].idx
+    })
+    
+    roomsTmp := 0
+    rooms := 0
+    for _, elm := range arr {
+        
+        if elm.t == "S" {
+            roomsTmp++
+        } else {
+            roomsTmp--
+        }
+        
+        rooms = max(rooms, roomsTmp)
+    }
+    
+    return rooms
+}
+
+func max(a,b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+
+
+/// HEAP ******************************************
+
 import (
 	"errors"
 	"sort"
