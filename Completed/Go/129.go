@@ -1,3 +1,7 @@
+import (
+    "strconv"
+)
+
 /**
  * Definition for a binary tree node.
  * type TreeNode struct {
@@ -7,39 +11,29 @@
  * }
  */
 func sumNumbers(root *TreeNode) int {
-    sum := 0
+    res := 0
     
-    path := []int{}
-    helper(root, &path, &sum)
+    helper(root, "", &res)
     
-    return sum
+    return res
 }
 
-func helper(root *TreeNode, path *[]int, sum *int) {
+func helper(root *TreeNode, numStr string, res *int) {
     if root == nil {
         return
     }
     
-    *path = append(*path, root.Val)
+    numStr += strconv.Itoa(root.Val)
     
     if root.Left == nil && root.Right == nil {
-        *sum += Arrconv(*path)
+        val, _ := strconv.Atoi(numStr)
+        *res += val
     }
     
-    helper(root.Left, path, sum)
-    helper(root.Right, path, sum)
-    
-    *path = (*path)[:len(*path)-1]
-}
-
-func Arrconv(nums []int) int {
-    res := 0
-    
-    mod := 1
-    for i := len(nums)-1; i >= 0; i-- {
-        res += (mod * nums[i])
-        mod *= 10
+    if root.Left != nil {
+        helper(root.Left, numStr, res)
     }
-    
-    return res
+    if root.Right != nil {
+        helper(root.Right, numStr, res)
+    }
 }
