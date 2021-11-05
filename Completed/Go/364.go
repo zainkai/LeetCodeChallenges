@@ -1,4 +1,3 @@
-// ******************************************************** Brute Force
 /**
  * // This is the interface that allows for creating nested lists.
  * // You should not implement it, or speculate about its implementation
@@ -24,76 +23,43 @@
  * // You can access NestedInteger's List element directly if you want to modify it
  * func (n NestedInteger) GetList() []*NestedInteger {}
  */
-//  func depthSumInverse(nestedList []*NestedInteger) int {
-//     sum, depth := 0, 1
-
-//     maxDepth(nestedList, 1, &depth)
-//     dfs(nestedList, 1, depth, &sum)
-
-//     return sum
-// }
-
-// func maxDepth(nl []*NestedInteger, depth int, mDepth *int) {
-//     *mDepth = max(*mDepth, depth)
-//     for _, l := range nl {
-//         if !l.IsInteger() {
-//             maxDepth(l.GetList(), depth+1, mDepth)
-//         }
-//     }
-// }
-
-// func dfs(nl []*NestedInteger, depth int, maxDepth int, sum *int) {
-//     levelSum := 0
-
-//     for _, list := range nl {
-//         if list.IsInteger() {
-//             levelSum += list.GetInteger()
-//         } else {
-//             dfs(list.GetList(), depth+1, maxDepth, sum)
-//         }
-//     }
-
-//     *sum += levelSum * (maxDepth - depth+1)
-// }
-
-// func max (a, b int) int {
-//     if a > b {
-//         return a
-//     }
-//     return b
-// }
-
-// Better ----------------------
 func depthSumInverse(nestedList []*NestedInteger) int {
-	sumMap := make(map[int]int)
-	sum, depth := 0, 1
-
-	dfs(nestedList, 1, &depth, sumMap)
-	for d, val := range sumMap {
-		sum += val * (depth - d + 1)
-	}
-
-	return sum
+    maxDepth := 0
+    depthMap := map[int][]int{}
+    
+    q := nestedList
+    depth := 1
+    for len(q) > 0 {
+        end := len(q)
+        for i := 0; i < end; i++ {
+            top := q[0]
+            q = q[1:]
+            
+            if top.IsInteger() {
+                x := top.GetInteger()
+                maxDepth = max(maxDepth, depth)
+                depthMap[x] = append(depthMap[x], depth)
+            } else {
+                q = append(q, top.GetList()...)
+            }
+        }
+        depth++
+    }
+    
+    res := 0
+    for key, arr := range depthMap {
+        for _, depth := range arr {
+            weight := maxDepth - depth + 1
+            res += key * weight
+        }
+    }
+    
+    return res
 }
 
-func dfs(nl []*NestedInteger, depth int, maxDepth *int, sumMap map[int]int) {
-	levelSum := 0
-	*maxDepth = max(*maxDepth, depth)
-
-	for _, list := range nl {
-		if list.IsInteger() {
-			levelSum += list.GetInteger()
-		} else {
-			dfs(list.GetList(), depth+1, maxDepth, sumMap)
-		}
-	}
-
-	sumMap[depth] += levelSum
-}
-
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
+func max(a,b int) int {
+    if a > b {
+        return a
+    }
+    return b
 }
