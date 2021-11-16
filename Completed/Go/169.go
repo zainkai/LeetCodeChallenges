@@ -15,15 +15,11 @@ func majorityElement(nums []int) int {
 
 // O(N) time
 
-import (
-	"sort"
-)
+import "sort"
 
 func majorityElement(nums []int) int {
-	mid := int(len(nums)/2)
-	sort.Ints(nums)
-	
-	return nums[mid]
+    sort.Ints(nums)
+    return nums[len(nums)/2]
 }
 
 
