@@ -1,28 +1,32 @@
-type point struct {
-    x,y int
+type frame struct {
+  x, y int
 }
 
 func uniquePaths(m int, n int) int {
-    memo := map[point]int{}
-    start := point{0,0}
-    
-    return helper(memo, start, m-1, n-1)
+  memo := map[frame]int{}
+  
+  return helper(
+    frame{0,0},
+    frame{m-1,n-1},
+    memo,
+  )
 }
 
-func helper(memo map[point]int, curr point, m, n int) int {
-    if curr.x > m || curr.y > n {
-        return 0
-    } else if curr.x == m && curr.y == n {
-        return 1
-    } else if val, ok := memo[curr]; ok {
-        return val
-    }
-    
-    right := point{curr.x+1, curr.y}
-    memo[curr] += helper(memo, right, m, n)
-    
-    down := point{curr.x, curr.y+1}
-    memo[curr] += helper(memo, down, m, n)
-    
-    return memo[curr]
+func helper(curr, target frame, memo map[frame]int) int {
+  if curr == target {
+    return 1
+  } else if res, ok := memo[curr]; ok {
+    return res
+  } else if isNotInBounds(curr, target) {
+    return 0
+  }
+  
+  memo[curr] = (helper(frame{curr.x+1, curr.y}, target, memo)+ 
+    helper(frame{curr.x, curr.y+1}, target, memo))
+  
+  return memo[curr]
+}
+
+func isNotInBounds(curr, target frame) bool {
+  return (curr.x > target.x || curr.y > target.y)
 }
