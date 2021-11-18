@@ -1,26 +1,26 @@
 func findDisappearedNumbers(nums []int) []int {
-	result := []int{}
-	for _, v := range nums {
-		key := abs(v) - 1
-		if nums[key] < 0 {
-			continue
-		}
-
-		nums[key] = -nums[key]
-	}
-
-	for i, v := range nums {
-		if v > 0 {
-			result = append(result, i+1)
-		}
-	}
-
-	return result
+    for _, v := range nums {
+        idx := abs(v)-1
+        if nums[idx] < 0 {
+            continue
+        } else {
+            nums[idx] = -nums[idx]
+        }
+    }
+    
+    res := []int{}
+    for i, v := range nums {
+        if v > 0 {
+            res = append(res, i+1)
+        }
+    }
+    
+    return res
 }
 
-func abs(a int) int {
-	if a < 0 {
-		return -a
-	}
-	return a
+func abs(x int) int {
+    if x < 0 {
+        return -x
+    }
+    return x
 }
