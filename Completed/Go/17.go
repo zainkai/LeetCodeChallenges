@@ -1,33 +1,37 @@
-var numMap = map[byte][]string{
-    '2': []string{"a","b","c"},
-    '3': []string{"d","e","f"},
-    '4': []string{"g","h","i"},
-    '5': []string{"j","k","l"},
-    '6': []string{"m","n","o"},
-    '7': []string{"p","q","r","s"},
-    '8': []string{"t","u","v"},
-    '9': []string{"w","x","y","z"},
+var conv = map[byte][]byte{
+    '2': []byte{'a','b','c'},
+    '3': []byte{'d','e','f'},
+    '4': []byte{'g','h','i'},
+    '5': []byte{'j','k','l'},
+    '6': []byte{'m','n','o'},
+    '7': []byte{'p','q','r','s'},
+    '8': []byte{'t','u','v'},
+    '9': []byte{'w','x','y','z'},
 }
 
 func letterCombinations(digits string) []string {
-    result := []string{}
     if len(digits) == 0 {
-        return result
+        return []string{}
     }
     
-    helper(digits, 0, "", &result)
+    res := []string{}
+    helper(digits, []byte{}, &res)
     
-    return result
+    return res
 }
 
-func helper(digits string, pos int, builder string, result *[]string) {
-    if len(builder) == len(digits) {
-        *result = append(*result, builder)
+func helper(digits string, path []byte, res *[]string) {
+    if len(digits) == 0 {
+        *res = append(*res, string(path))
         return
     }
     
-    b := digits[pos]
-    for _, digit := range numMap[b]  {
-        helper(digits, pos+1, builder+digit, result)
+    
+    digit := digits[0]
+    digits = digits[1:]
+    for _, b := range conv[digit] {
+        path = append(path, b)
+        helper(digits, path, res)
+        path = path[:len(path)-1]
     }
 }
