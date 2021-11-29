@@ -1,33 +1,20 @@
-import (
-	"strings"
-)
+import "strings"
 
 func simplifyPath(path string) string {
-	strArr := strings.Split(path, "/")
-	
-	stk := []string{}
-	for _, s := range strArr {
-		if strings.EqualFold(s, "") {
-			continue
-        } else if strings.EqualFold(s, ".") {
+    stk := []string{}
+    
+    pathArr := strings.Split(path, "/")
+    for _, elm := range pathArr {
+        if elm == "" || elm == "." {
             continue
-        } else if strings.EqualFold(s, "..") {
+        } else if elm == ".." {
             if len(stk) > 0 {
-                stk = stk[:len(stk)-1] // (POP) sub-slicing is O(1)
+                stk = stk[:len(stk)-1]
             }
         } else {
-            stk = append(stk, s) // (PUSH) O(1) amortized
+            stk = append(stk, elm)
         }
     }
-
-    sb := strings.Builder{}
-    for _, p := range stk {
-        sb.WriteString("/"+p)
-    }
     
-    if len(stk) == 0 {
-        return "/"
-    }
-	return sb.String()
+    return "/" + strings.Join(stk, "/")
 }
-
