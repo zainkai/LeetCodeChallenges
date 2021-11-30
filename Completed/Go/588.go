@@ -31,12 +31,12 @@ func Constructor() FileSystem {
 }
 
 // helper
-func (this *FileSystem) travDir(path string, _ bool) *Node {
+func (this *FileSystem) travDir(path string, doCreate bool) *Node {
     pathArr := this.normalizePath(path)
     
     currNode := this.root
     for _, n := range pathArr {
-        if nextNode, ok := currNode.children[n]; !ok {
+        if nextNode, ok := currNode.children[n]; !ok && doCreate {
             currNode.children[n] = &Node{
                 name: n,
                 isFile: false,
