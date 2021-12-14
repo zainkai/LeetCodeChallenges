@@ -6,20 +6,18 @@
  *     Right *TreeNode
  * }
  */
-func rangeSumBST(root *TreeNode, L int, R int) int {
-    sum := 0
-    dfs(root, L, R, &sum)
-    
-    return sum
-}
-
-func dfs(root *TreeNode, L int, R int, sum *int) {
-    if root == nil {
-        return
-    } else if root.Val >= L && root.Val <= R {
-        *sum += root.Val
-    }
-    
-    dfs(root.Left, L, R, sum)
-    dfs(root.Right, L, R, sum)
+func rangeSumBST(root *TreeNode, low int, high int) int {
+  if root == nil {
+    return 0
+  }
+  
+  res := 0
+  if root.Val >= low && root.Val <= high {
+    res += root.Val
+  }
+  
+  res += rangeSumBST(root.Left, low, high)
+  res += rangeSumBST(root.Right, low, high)
+  
+  return res
 }
