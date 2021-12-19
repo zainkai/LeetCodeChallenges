@@ -29,12 +29,8 @@ func helper(arr *[]byte) string {
         *arr = (*arr)[1:]
         
         if val, ok := digitMap[top]; ok {
-            if mult == 0 {
-                mult = val
-            } else {
-                mult *= 10
-                mult += val
-            }
+            mult *= 10
+            mult += val
         } else if top == '[' {
             str := helper(arr)
             sb.WriteString(strings.Repeat(str, mult))
